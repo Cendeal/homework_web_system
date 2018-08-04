@@ -1,0 +1,89 @@
+<body>{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}管理群组{% endblock %}
+{% block content %}
+    <div class="container">
+       <table class="table  table-bordered "  >
+       <h2 class="card-title">管理群组
+       <div class="input-group col-lg-6 " style="float: right">
+                    <input type="text" id='inputdata' class="form-control" {% if id == None %} placeholder="通过 学号 搜索..."
+                           {% else %}value="{{ id }}" {% endif %}>
+                    <span class="input-group-btn">
+                    <button id='searchbtn' class="btn btn-primary" type="button">Go!</button>
+                      <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+                      <script type="text/javascript">
+                          $('#searchbtn').click(function () {
+                              location.href = '/homework/search?id=' + $('#inputdata').val()
+                          })
+                      </script>
+                    </span>
+                </div><!-- /input-group -->
+       </h2>
+         {% if userlist == None %}
+                <p>无记录！</p>
+            {% else %}
+            <thead>
+            <tr>
+                <th scope="col">学号</th>
+                <th scope="col">姓名</th>
+                <th scope="col">类型</th>
+                <th scope="col">邮箱</th>
+                <th scope="col">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in userlist %}
+                <tr>
+                    <th scope="row">{{ i.id }}</th>
+                    <td>{{ i.name }}</td>
+                    <td>
+                        <div class="btn-group">
+                            {% if i.perm==8 %}
+                                <label class="label label-warning" >学&nbsp;&nbsp;&nbsp;&nbsp;委
+                            {% elif i.perm==16%}
+                                <label class="label label-primary">管理员
+                            {% else %}
+                                <label class="label label-success">普&nbsp;&nbsp;&nbsp;&nbsp;通
+                            {% endif %}
+                            </label>
+
+                        </div>
+                    </td>
+                    <td>{{ i.email }}
+                        {% if i.isComfirm %} <span class="label label-success">已验证</span>
+                        {% else %}
+                            <span class="label label-warning">未验证</span>
+                        {% endif %}
+                    </td>
+                    <td><a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#ModalCenter{{ i.id }}">删除</a>
+                    </td>
+                    <div class="modal fade" id="ModalCenter{{ i.id }}" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">操作提示</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    确定删除
+                                    <button class="btn btn-warning">{{ i.id }}</button>
+                                    吗？
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <a href="/homework/deleteuser/{{ i.id }}" type="button" class="btn btn-primary">确定</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </h5>
+                </tr>
+            {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

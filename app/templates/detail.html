@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}{{ info.title }}{% endblock %}
+{% block content %}
+    <!-- Modal -->
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">{{ info.title }}
+                    <a type="button" class="close" href="{{ url_for('main.info') }}" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </a></h5>
+                <div class="dropdown">
+                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                    <a href="#" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="false"> {{ count }} </a>人
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <strong>
+                            <li class="dropdown-header">已浏览信息:</li>
+                        </strong>
+                        {% for i in members %}
+                            <li class="dropdown-header">{{ i.fk_sid }}:{{ i.readdate }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success" role="alert">
+                    <h3 class="alert-heading"><strong>{{ info.title }}</strong></h3>
+                    {% if info.state==0 %}
+                        <span class="label label-success " style="float: right">进行ing</span>
+                    {% else %}
+                        <span class="label label-warning " style="float: right">已结束</span>
+                    {% endif %}
+                    <hr>
+                    <div id="text{{ info.id }}" class="text-success">{{ info.content|safe }}</div>
+                    <hr>
+                    <p class="mb-0">创建时间:{{ info.createdate }}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <a href="{{url_for('main.info')  }}" type="button" class="btn btn-primary">我知道了</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends "bootstrap/base.html" %}
+{% block navbar %}
+    <div class="navbar navbar-inverse" role="navigation" id="top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('main.index') }}">首页</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="{{ url_for('main.info') }}">作业信息</a>
+                    </li>
+                </ul>
+                {% if current_user.is_authenticated and current_user.perm >=8 %}
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="{{ url_for('main.manage' ) }}">管理作业</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="{{ url_for('main.addWork' ) }}">添加作业</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="{{ url_for('main.addCourses' ) }}">添加科目</a>
+                        </li>
+                    </ul>
+                    {% if current_user.perm >= 8 %}
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a href="{{ url_for('main.manageuser' ) }}">管理账号</a>
+                            </li>
+                        </ul>
+                    {% endif %}
+                {% endif %}
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current_user.is_authenticated %}
+                        <li>
+                            <div class="btn-group ">
+                                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    菜单<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu ">
+
+                                    <li>
+                                        <a class="dropdown-item " href="{{ url_for('main.profile') }}">个人信息</a>
+                                    </li>
+                                    <li><a class="dropdown-item " href="{{ url_for('main.changePassword' ) }}">修改密码</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ url_for('main.changeProfile') }}">修改信息</a>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('main.logout') }}">注销退出</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li>
+                            <div class="btn-group ">
+                                <a class="btn btn-success" href="{{ url_for('main.login') }}">登陆</a>
+                            </div>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        {# 提示信息#}
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times</button>
+                {{ message }}
+            </div>
+        {% endfor %}
+        <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                var topheight = $('#top').height()
+                $(document).scroll(function (e) {
+                    var x = $(document).scrollTop()
+                    if (x > topheight && !$('#return_top').isShown) {
+                        $('#return_top').show()
+                    } else {
+                        $('#return_top').hide()
+                    }
+
+
+                });
+            });
+
+        </script>
+        <p id="return_top" style="display: none;"><a href="#top">return top</a></p>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="navbar center-block">
+        <span class="label label-primary">友情链接</span>
+        <div class="row ">
+            <div class="col-xs-4 col-sm-4 text-center"><a class="btn-link " href="http://jw.jluzh.com/">吉林大学珠海学院教学平台</a>
+            </div>
+            <div class="col-xs-4 col-sm-4 text-center"><a class="btn-link" href="https://library.jluzh.com/">吉林大学珠海学院教学图书馆</a>
+            </div>
+            <div class="col-xs-4 col-sm-4 text-center"><a class="btn-link" href="http://www.jluzh.com//">吉林大学珠海学院官网</a>
+            </div>
+        </div>
+        <p class="text-center text-info">版权所有Cendeal,保留一切权利<strong>粤ICP备18054828号</strong></p>
+        <p class="text-center">
+            <button type="button" class="badge badge-pill badge-success" data-toggle="modal"
+                    data-target=".bs-adminwx-modal-sm">管理员微信
+            </button>
+            <button type="button" class="badge badge-pill badge-warning" data-toggle="modal"
+                    data-target=".bs-thanks-modal-sm">点赞赏一下
+            </button>
+        </p>
+        <!-- Small modal -->
+        <div class="modal fade bs-adminwx-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm" role="document">
+
+                <div class="modal-content">
+                    <h5 class="modal-title text-center">扫一扫加微信
+                        <a type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </h5>
+                    <img src="{{ url_for('static',filename='adminwx.jpg') }}" style="max-width:100%;">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade bs-thanks-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <h5 class="modal-title text-center">扫一扫赞赏
+                        <a type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </h5>
+                    <img src="{{ url_for('static',filename='thanks.jpg') }}" style="max-width:100%;">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

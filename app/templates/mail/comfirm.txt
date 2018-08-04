@@ -1,0 +1,1 @@
+确定你的邮箱，复制链接：http://www.cendeal.cn/comfirm?token={{ token }}!在浏览器打开

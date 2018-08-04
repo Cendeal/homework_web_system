@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}添加科目{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <h2 class="card-title ">添加科目</h2>
+            {#  注册表格  #}
+            <div class="col-md well well-lg">
+                {{ wtf.quick_form(form) }}
+            </div>
+        </div>
+        <div class="row">
+            <hr>
+        </div>
+    </div>
+{% endblock %}

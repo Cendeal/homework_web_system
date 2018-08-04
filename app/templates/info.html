@@ -1,0 +1,60 @@
+{% extends "/base.html" %}
+{% block content %}
+
+    <div class="container">
+        <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+        <h2 class="card-title-4">作业通知
+            <small>[{{ num }}]
+
+            </small>
+        </h2>
+        <div id="accordion">
+            {#      类型#}
+            {% for i in dict_for_course %}
+                <div class="card">
+                    <div class="card-header" id="headingOne{{ i['id'] }}">
+                        <h5 class="card-title">
+                            <button class="list-group-item " data-toggle="collapse"
+                                    data-target="#collapseOne{{ i['id'] }}" aria-expanded="true"
+                                    aria-controls="collapseOne{{ i['id'] }}">
+                                {{ i['name'] }}<small>[{{ i['len'] }}]</small>
+                                <span class="caret"></span>
+                                {% if i['len']-i['read'][1]>0 %}
+                                <span class="badge badge-success" data-toggle="tooltip" data-placement="top" title="未读">未读{{ i['len']-i['read'][1] }}</span>
+                                {% endif %}
+
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseOne{{ i['id'] }}" class="collapse  " aria-labelledby="headingOne{{ i['id'] }}"
+                         data-parent="#accordion">
+                        {% for j in i['list'] %}
+                            {% if j.state !=2 %}
+                                <div class="media">
+                                        <div class="media-left">
+                                            <a class="btn btn-success  disabled ">{{ j.title[0]|upper }}</a>
+                                        </div>
+                                        <div class="media-body">
+                                            <h4 class="media-heading"><strong>{{ j.title }}</strong><small>[{{ j.createdate}}]</small>
+                                                {% if j not in i['read'][0] %}
+                                                 <small><span class="badge badge-success" style="float: left">未读</span></small>
+                                                     <a class="btn btn-sm btn-warning" style="float: right" href="{{ url_for('main.read',infoid=j.id,isread=False) }}">查看</a>
+                                                    {% else %}
+                                                 <small><span class="badge badge-secondary" style="float: left">已读</span></small>
+                                                     <a class="btn btn-sm btn-warning" style="float: right" href="{{ url_for('main.read',infoid=j.id,isread=True) }}">查看</a>
+                                                {% endif %}
+
+                                            </h4>
+                                            <p style="color: darkgray">{{ j.content[:20]|striptags }}...</p>
+                                        </div>
+                                <hr>
+                                </div>
+
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

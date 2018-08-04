@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>邮箱验证</title>
+</head>
+<body>
+<p>{{ current_user.name }}你好！请确认：</p>
+{{ url_for('main.confirmemail',token=token,_external=True) }}
+请点击验证链接，确定你的邮箱<a href="{{ url_for('main.confirmemail',token=token,_external=True) }}">点击验证</a>!
+</body>
+</html>

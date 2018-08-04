@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}添加作业{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <h2 class="card-title">添加作业</h2>
+            {#  注册表格  #}
+            <div class="col-md well well-lg">
+                {{ wtf.quick_form(form) }}
+            </div>
+
+        </div>
+        <div class="row">
+            <hr>
+        </div>
+
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/wangEditor.min.js') }}"></script>
+    <script type="text/javascript">
+        var $text1 = $('#content')
+        $text1.hide()
+        $text1.after("<div id='editor' class='form-group '></div>")
+        var E = window.wangEditor
+        var editor = new E('#editor')
+        editor.customConfig.menus = [
+            'head',  // 标题
+            'bold',  // 粗体
+            'fontSize',  // 字号
+            'fontName',  // 字体
+            'italic',  // 斜体
+            'underline',  // 下划线
+            'strikeThrough',  // 删除线
+            'foreColor',  // 文字颜色
+            'backColor',  // 背景颜色
+            'link',  // 插入链接
+            'list',  // 列表
+            'justify',  // 对齐方式
+            'quote',  // 引用
+            'emoticon',  // 表情
+            'image',  // 插入图片
+            'video',  // 插入视频
+            'code',  // 插入代码
+            'undo',  // 撤销
+            'redo'  // 重复
+        ]
+        editor.customConfig.uploadImgServer = '/homework/upload'
+        editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024
+        editor.create()
+        document.getElementById('submit').addEventListener('click', function () {
+            $text1.val(editor.txt.html())
+        }, false)
+    </script>
+{% endblock %}

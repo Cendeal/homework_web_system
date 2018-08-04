@@ -1,0 +1,120 @@
+{% extends "/base.html" %}
+{% block content %}
+    <div class="container">
+        <h2 class="card-title-4">管理作业/科目
+            <small>[{{ num }}]</small>
+        </h2>
+        <div id="accordion">
+            {#      类型#}
+            {% for i in dict_for_course %}
+                <div class="card">
+                    <div class="card-header" id="headingOne{{ i['id'] }}">
+                        <button class="list-group-item " data-toggle="collapse"
+                                data-target="#collapseOne{{ i['id'] }}" aria-expanded="true"
+                                aria-controls="collapseOne{{ i['id'] }}">
+                            {{ i['name'] }}
+                            <span class="badge-pill badge-success">{{ i['len'] }}</span>
+                            <span class="caret"></span>
+                            <a class="btn btn-danger" style="float: right" data-toggle="modal"
+                               data-target="#ModalCenter{{ i['id'] }}">删除科目</a>
+                        </button>
+                        <div class="modal fade" id="ModalCenter{{ i['id'] }}" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">操作提示</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        确定删除
+                                        <button class="btn btn-warning">{{ i['name'] }}</button>
+                                        吗？
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消
+                                        </button>
+                                        <a href="deletecourses/{{ i['id'] }}" type="button"
+                                           class="btn btn-primary">确定</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="collapseOne{{ i['id'] }}" class="collapse" aria-labelledby="headingOne{{ i['id'] }}"
+                         data-parent="#accordion">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col">编号</th>
+                                <th scope="col">标题</th>
+                                <th scope="col">内容</th>
+                                <th scope="col">创建时间</th>
+                                <th scope="col">状态</th>
+                                <th scope="col">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for j in i['list'] %}
+                                <tr>
+                                    <th scope="row">{{ j.id }}</th>
+                                    <td>{{ j.title[:10] }}...</td>
+                                    <td>{{ j.content[0:20] }}...</td>
+                                    <td>{{ j.createdate }}</td>
+                                    <td>
+                                        {% if j.state==0 %}
+                                            <span class="label label-success">进行ing</span>
+                                        {% elif j.state==1 %}
+                                            <label class="label label-warning">已结束</label>
+                                        {% elif j.state==2 %}
+                                            <label class="label label-info ">已隐藏</label>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-toggle">
+                                            <a href="manage/{{ j.id }}" class="btn btn-primary btn-sm">修改</a>
+                                            <a class="btn btn-danger btn-sm" data-toggle="modal"
+                                               data-target="#exampleModalCenter{{ j.id }}">删除</a>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="exampleModalCenter{{ j.id }}" tabindex="-1"
+                                                 role="dialog" aria-labelledby="exampleModalCenterTitle"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">操作提示</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            确定删除
+                                                            <button class="btn btn-warning">{{ j.title }}</button>
+                                                            吗？
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">取消
+                                                            </button>
+                                                            <a href="delete/{{ j.id }}" type="button"
+                                                               class="btn btn-primary">确定</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

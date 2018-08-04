@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+
+        <h2 class="card-title-4">个人信息</h2>
+        {% if current_user.is_authenticated %}
+            <ul class="list-group">
+                <li class="list-group-item active">{{ user.name }}</li>
+                <li class="list-group-item disabled">邮箱</li>
+                <li class="list-group-item">{{ user.email }}
+                    {% if user.isComfirm %} <span class="label label-success">已验证</span>
+                        {% if emailsender.isopen == True  %}
+                            <a style="float: right" href="{{ url_for('main.openemail',isopen=False) }}">点击关闭通知</a>
+                        {% else %}
+                            <a style="float: right" href="{{ url_for('main.openemail',isopen=True) }}">点击开启通知</a>
+                        {% endif %}
+
+                        {% else %}
+                        <span class="label label-warning">未验证</span>
+                        <a class="badge badge-pill badge-info" href="{{ url_for('main.generatetoken') }}">点击验证</a>
+                        {% endif %}
+                </li>
+                <li class="list-group-item disabled">学号</li>
+                <li class="list-group-item">{{ user.id }}</li>
+            <li class="list-group-item disabled">班别</li>
+                <li class="list-group-item">{{ cid }}</li>
+            </ul>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                请先登录！
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

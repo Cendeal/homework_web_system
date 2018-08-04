@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <h2 class="card-title-4">首页</h2>
+        <div class="jumbotron">
+            <h1 class="display-4">作业布置</h1>
+            <p class="lead">Homework Online,这是一个用于学生记录作业任务的网站。如果要申请作为班级管理权限，请添加网站管理员微信</p>
+            <hr class="my-4">
+            <p>吉林大学珠海学院 计算机学院 软件工程</p>
+            <p class="lead">
+                <a class="btn btn-success btn-lg" href="{{  url_for('main.info')}}" role="button">查看作业信息</a>
+            </p>
+        </div>
+    </div>
+     {{ super() }}
+{% endblock %}

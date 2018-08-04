@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}登陆{% endblock %}
+{% block content %}
+    <div class="container">
+        <h2 class="card-title-4">登陆</h2>
+        {#  登陆表格  #}
+        <div class="col-md-4 ">
+            {{ wtf.quick_form(form) }}
+        </div>
+            <hr>
+        <p>
+            新用户？
+            <a class="btn bg-primary" href="{{ url_for('main.register') }}">
+                点击注册
+            </a>
+        </p>
+    </div>
+{% endblock %}
