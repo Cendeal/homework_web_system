@@ -1,0 +1,4 @@
+【系统】
+申请通知
+{{ user.id }}({{ user.name }})申请学委
+请访问https://www.cendeal.cn/homework

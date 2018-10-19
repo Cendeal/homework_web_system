@@ -10,10 +10,10 @@ class Config:
     MAIL_SERVER= 'smtp.qq.com'
     MAIL_PORT= 587
     MAIL_USE_TLS = True
-    MAIL_USERNAME= '系统邮箱地址'
-    MAIL_PASSWORD= '密码'
+    MAIL_USERNAME= '管理员邮箱'
+    MAIL_PASSWORD= '邮箱密码'
     FLASKY_MAIL_SUBJECT_PREFIX = '[作业通知]'
-    FLASKY_MAIL_SENDER= '作业通知助手<系统邮箱地址>'
+    FLASKY_MAIL_SENDER= '作业通知助手<管理员邮箱>'
 
     @staticmethod
     def init_app(app):
@@ -22,7 +22,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root@localhost/homework?charset=utf8'
+    SQLALCHEMY_DATABASE_URI = ''
     MY_FORM_POST_URL = ''
 
 

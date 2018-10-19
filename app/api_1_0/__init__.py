@@ -1,3 +1,4 @@
 from flask import Blueprint
-api = Blueprint('api',__name__)
-from . import task
+
+api = Blueprint('api', __name__)
+from . import get, post

@@ -46,13 +46,15 @@ class Courses(db.Model):
 
     def __repr__(self):
         return '<Courses %r>' % self.name
+
+
 # 浏览记录表
 class ReadHistory(db.Model):
     __tablename__ = 'readhistory'
-    readdate = db.Column(db.DateTime,default=datetime.utcnow)
+    readdate = db.Column(db.DateTime, default=datetime.utcnow)
     # 外键
-    fk_sid = db.Column(db.String(8), db.ForeignKey('students.id'),primary_key=True)
-    fk_hid = db.Column(db.Integer, db.ForeignKey('houseworks.id'),primary_key=True)
+    fk_sid = db.Column(db.String(8), db.ForeignKey('students.id'), primary_key=True)
+    fk_hid = db.Column(db.Integer, db.ForeignKey('houseworks.id'), primary_key=True)
 
 
 # 作业表：创建日期、外键科目编号、标题、内容、状态、外键班别号
@@ -67,7 +69,7 @@ class Houseworks(db.Model):
     picsave = db.relationship('PicSave', backref='houseworks')
     readhistory = db.relationship('ReadHistory',
                                   foreign_keys=[ReadHistory.fk_hid],
-                                  backref=db.backref('readwork',lazy='joined'),
+                                  backref=db.backref('readwork', lazy='joined'),
                                   lazy='dynamic',
                                   cascade='all,delete-orphan')
     # 外键班别号
@@ -100,8 +102,8 @@ class Teamnumbers(db.Model):
 
     houseworks = db.relationship('Houseworks', backref='teamnbers')
     courses = db.relationship('Courses', backref='teamnbers')
-    emailsender=db.relationship('EmailSender', backref='teamnbers')
-    students = db.relationship('Students',backref='teamnbers')
+    emailsender = db.relationship('EmailSender', backref='teamnbers')
+    students = db.relationship('Students', backref='teamnbers')
 
     def is_this_admin(self, student):
         return self.fk_sid == student.get_id()
@@ -125,11 +127,11 @@ class Students(UserMixin, db.Model):
     # 关系属性
     readhistory = db.relationship('ReadHistory',
                                   foreign_keys=[ReadHistory.fk_sid],
-                                  backref=db.backref('readuser',lazy='joined'),
+                                  backref=db.backref('readuser', lazy='joined'),
                                   lazy='dynamic',
                                   cascade='all,delete-orphan')
-    picsave = db.relationship('PicSave',backref='students')
-    emailsender = db.relationship('EmailSender',backref='students')
+    picsave = db.relationship('PicSave', backref='students')
+    emailsender = db.relationship('EmailSender', backref='students')
 
     @property
     def password(self):
@@ -142,28 +144,35 @@ class Students(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def generate_confirm_token(self,expiration=3600):
-        s =Serializer(current_app.config['SECRET_KEY'],expiration)
-        return s.dumps({'confirm':self.id})
+    def generate_confirm_token(self, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'confirm': self.id})
 
-    def confirm(self,token):
-        s =Serializer(current_app.config['SECRET_KEY'])
+    def confirm(self, token):
+        s = Serializer(current_app.config['SECRET_KEY'])
         try:
-            data =s.loads(token)
+            data = s.loads(token)
         except:
             return False
-        if data.get('confirm')!=self.id:
+        if data.get('confirm') != self.id:
             return False
         self.isComfirm = True
         db.session.add(self)
         return True
-
 
     def is_admin(self):
         return self.perm >= Permission.WRITE
 
     def __repr__(self):
         return '<Students %r>' % self.id
+
+    def to_json(self):
+        keys = vars(self).items()
+        data = {}
+        for k, v in keys:
+            if k != '_sa_instance_state' and k != 'password_hash':
+                data[k] = v
+        return data
 
 
 # 图片保存表
@@ -172,14 +181,13 @@ class PicSave(db.Model):
     path = db.Column(db.String(256), primary_key=True)
     # 外键
     fk_workid = db.Column(db.Integer, db.ForeignKey('houseworks.id'))
-    fk_sid = db.Column(db.String(64),db.ForeignKey('students.id'))
-
+    fk_sid = db.Column(db.String(64), db.ForeignKey('students.id'))
 
 
 # 开通通知表
 class EmailSender(db.Model):
-    __tablename__='emailsender'
-    isopen = db.Column(db.Boolean,default=False)
+    __tablename__ = 'emailsender'
+    isopen = db.Column(db.Boolean, default=False)
     email = db.Column(db.String(64))
-    fk_sid =db.Column(db.String(8),db.ForeignKey('students.id'),primary_key=True)
-    fk_tid = db.Column(db.String(64), db.ForeignKey('teamnumbers.id'),primary_key=True)
+    fk_sid = db.Column(db.String(8), db.ForeignKey('students.id'), primary_key=True)
+    fk_tid = db.Column(db.String(64), db.ForeignKey('teamnumbers.id'), primary_key=True)

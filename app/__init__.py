@@ -27,5 +27,5 @@ def getApp(config_name):
     app.register_blueprint(blueprint_main)
     # 注册api blueprint
     from .api_1_0 import api as blueprint_api
-    app.register_blueprint(blueprint_api, url_prefix='/api/v1.0')
+    app.register_blueprint(blueprint_api, url_prefix='/homework/api/v1.0')
     return app

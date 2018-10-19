@@ -7,8 +7,6 @@ from datetime import datetime
 from flask import flash, render_template, redirect, url_for, request
 from flask_login import login_user, login_required, logout_user, current_user
 from sqlalchemy import desc
-
-import config
 from app import db, mail
 from app.mail import send_email
 from app.main.form import LoginForm, RegistrationForm, EditProfileForm, ChangePassword, WorkForm, WorkFormEidt, \

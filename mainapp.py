@@ -7,7 +7,6 @@ manage = Manager(app)
 
 @manage.command
 def initApp():
-    from app.models import *
     db.create_all()
 
 
