@@ -155,7 +155,7 @@ def changegroupid():
             return 'fail'
         user = Students.query.filter_by(id=id).first()
         print(user.fk_tid)
-        if user != None and user.fk_tid != groupid:
+        if user is not None and user.fk_tid != groupid:
             user.fk_tid = groupid
             db.session.add(user)
             try:
@@ -302,11 +302,17 @@ def get_dict_hosework(current_user):
     for i in courses:
         hasread = Houseworks.query.join(ReadHistory,
                                         ReadHistory.fk_hid == Houseworks.id).filter(
-            Houseworks.fk_tid == num, Houseworks.fk_cid == i.id, ReadHistory.fk_sid == current_user.id).all()
+            Houseworks.fk_tid == num,
+            Houseworks.fk_cid == i.id,
+            ReadHistory.fk_sid == current_user.id,
+            Houseworks.state != States.HIDE
+        ).all()
         temp = {'id': i.id,
-                'list': Houseworks.query.filter(Houseworks.fk_tid == num, Houseworks.fk_cid == i.id).order_by(
+                'list': Houseworks.query.filter(Houseworks.fk_tid == num,
+                                                Houseworks.fk_cid == i.id,
+                                                Houseworks.state != States.HIDE).order_by(
                     desc(Houseworks.createdate)).all(),
-                'hide': len(Houseworks.query.filter_by(fk_tid=num, fk_cid=i.id, state=2).all()),
+                'hide': len(Houseworks.query.filter_by(fk_tid=num, fk_cid=i.id, state=States.HIDE).all()),
                 'name': i.name,
                 'read': [hasread, len(hasread)],
                 'len': 0}
