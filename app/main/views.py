@@ -295,7 +295,7 @@ def generatetoken():
     return redirect(url_for('main.profile'))
 
 
-def get_dict_hosework(current_user, is_manage = False):
+def get_dict_hosework(current_user, is_manage=False):
     num = current_user.fk_tid
     courses = Courses.query.filter_by(fk_tid=num).all()
     dict_for_course = []
@@ -372,7 +372,7 @@ def logout():
 @login_required
 def manage():
     if current_user.is_admin():
-        dict_for_course, num = get_dict_hosework(current_user)
+        dict_for_course, num = get_dict_hosework(current_user, True)
         return render_template('/manage.html', dict_for_course=dict_for_course, num=num)
     else:
         return render_template('/404.html')
