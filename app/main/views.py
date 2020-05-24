@@ -435,7 +435,6 @@ def manageid(id):
         form.title.data = work.title
         form.state.data = str(work.state)
         content = work.content.replace('\r', '').replace('\n', '<br>').replace('\t', '&nbsp;&nbsp;')
-        content = '<p>' + content + '</p>'
         return render_template('/editwork.html', form=form, content=content)
     else:
         return render_template('/404.html'), 404

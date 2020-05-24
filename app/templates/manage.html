@@ -45,25 +45,25 @@
                     </div>
                     <div id="collapseOne{{ i['id'] }}" class="collapse" aria-labelledby="headingOne{{ i['id'] }}"
                          data-parent="#accordion">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" style="table-layout: fixed">
                             <thead>
                             <tr>
-                                <th scope="col">编号</th>
-                                <th scope="col">标题</th>
-                                <th scope="col">内容</th>
-                                <th scope="col">创建时间</th>
-                                <th scope="col">状态</th>
-                                <th scope="col">操作</th>
+                                <th scope="col" style="text-align: center">编号</th>
+                                <th scope="col" style="text-align: center">标题</th>
+                                <th scope="col" style="text-align: center">内容</th>
+                                <th scope="col" style="text-align: center">创建时间</th>
+                                <th scope="col" style="text-align: center">状态</th>
+                                <th scope="col" style="text-align: center">操作</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for j in i['list'] %}
                                 <tr>
-                                    <th scope="row">{{ j.id }}</th>
-                                    <td>{{ j.title[:10] }}...</td>
-                                    <td>{{ j.content[0:20] }}...</td>
-                                    <td>{{ j.createdate }}</td>
-                                    <td>
+                                    <th scope="row" style="text-align: center">{{ j.id }}</th>
+                                    <td title="{{ j.title }}"><div style="height: 2rem;overflow: hidden;text-overflow: ellipsis">{{ j.title }}</div></td>
+                                    <td title="{{ j.content|striptags }}"><div style="height: 2rem;overflow: hidden;text-overflow: ellipsis">{{ j.content|striptags }}</div></td>
+                                    <td style="text-align: center">{{ j.createdate }}</td>
+                                    <td style="text-align: center">
                                         {% if j.state==0 %}
                                             <span class="label label-success">进行ing</span>
                                         {% elif j.state==1 %}
@@ -72,7 +72,7 @@
                                             <label class="label label-info ">已隐藏</label>
                                         {% endif %}
                                     </td>
-                                    <td>
+                                    <td align="center">
                                         <div class="btn-group btn-group-toggle">
                                             <a href="manage/{{ j.id }}" class="btn btn-primary btn-sm">修改</a>
                                             <a class="btn btn-danger btn-sm" data-toggle="modal"
