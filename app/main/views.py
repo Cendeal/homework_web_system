@@ -301,6 +301,10 @@ def get_dict_hosework(current_user, is_manage=False):
     dict_for_course = []
     for i in courses:
         if is_manage is not True:
+            all = Houseworks.query.filter(Houseworks.fk_tid == num,
+                                                Houseworks.fk_cid == i.id,
+                                                Houseworks.state != States.HIDE).order_by(
+                    desc(Houseworks.createdate)).all()
             hasread = Houseworks.query.join(ReadHistory,
                                             ReadHistory.fk_hid == Houseworks.id).filter(
                 Houseworks.fk_tid == num,
@@ -309,6 +313,9 @@ def get_dict_hosework(current_user, is_manage=False):
                 Houseworks.state != States.HIDE
             ).all()
         else:
+            all = Houseworks.query.filter(Houseworks.fk_tid == num,
+                                    Houseworks.fk_cid == i.id).order_by(
+                desc(Houseworks.createdate)).all()
             hasread = Houseworks.query.join(ReadHistory,
                                             ReadHistory.fk_hid == Houseworks.id).filter(
                 Houseworks.fk_tid == num,
@@ -320,10 +327,7 @@ def get_dict_hosework(current_user, is_manage=False):
         else:
             hide = len(Houseworks.query.filter_by(fk_tid=num, fk_cid=i.id,state=States.HIDE).all())
         temp = {'id': i.id,
-                'list': Houseworks.query.filter(Houseworks.fk_tid == num,
-                                                Houseworks.fk_cid == i.id,
-                                                Houseworks.state != States.HIDE).order_by(
-                    desc(Houseworks.createdate)).all(),
+                'list': all,
                 'hide': hide,
                 'name': i.name,
                 'read': [hasread, len(hasread)],
