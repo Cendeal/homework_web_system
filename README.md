@@ -179,8 +179,6 @@ def upload():
 
 #### 源码
 [homework_web_system](https://github.com/Cendeal/homework_web_system)
-#### 预览地址
-http://www.cendeal.cn/homework
 
 
 
